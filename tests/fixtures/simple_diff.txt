@@ -1,0 +1,24 @@
+diff --git a/lua/chchchanges.lua b/lua/chchchanges.lua
+index 1234567..abcdefg 100644
+--- a/lua/chchchanges.lua
++++ b/lua/chchchanges.lua
+@@ -10,7 +10,7 @@ local M = {}
+ ---@param key string The config key
+ ---@param default any The default value
+ ---@return any value The configuration value
+-local function get_config(key, default)
++local function get_config(key, default, extra)
+ 	local full_key = "chchchanges_" .. key
+ 	return vim.g[full_key] ~= nil and vim.g[full_key] or default
+ end
+@@ -88,6 +88,10 @@ end
+ ---Populate quickfix list with git hunks
+ ---@param opts table|nil Optional configuration
+ ---@return boolean success Whether the operation succeeded
++function M.new_function()
++	print("Hello world")
++end
++
+ function M.populate_quickfix(opts)
+ 	opts = opts or {}
+

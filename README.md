@@ -105,6 +105,18 @@ vim.g.chchchanges_diff_args = { 'main' }
    - Context (function/class name if available)
 4. Populates the quickfix list with proper formatting
 
+The plugin supports all git diff prefix formats (a/b, i/w, etc.) including mnemonic prefixes.
+
+## Debugging
+
+If you're experiencing issues with hunks not being detected, use the debug command:
+
+```vim
+:ChChangesDebug
+```
+
+This will open a split window showing the raw git diff output that the plugin is processing.
+
 ## Development
 
 This plugin follows the [Neovim Lua plugin best practices](https://github.com/lumen-oss/nvim-best-practices):
@@ -114,6 +126,29 @@ This plugin follows the [Neovim Lua plugin best practices](https://github.com/lu
 -  Lazy initialization via `plugin/` directory
 -  Configuration via `vim.g` global variables
 -  Proper quickfix formatting
+
+### Running Tests
+
+```bash
+# Run automated tests
+make test
+
+# Setup manual test environment (creates test_file.lua with changes)
+make manual-test
+
+# Clean up test files
+make clean
+```
+
+Or run tests directly:
+
+```bash
+# Automated tests
+nvim --headless -c "luafile tests/parse_spec.lua" -c "qa!"
+
+# Manual test
+./tests/manual_test.sh
+```
 
 ## License
 

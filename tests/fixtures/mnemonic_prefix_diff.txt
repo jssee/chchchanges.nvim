@@ -1,0 +1,36 @@
+diff --git i/src/app.css w/src/app.css
+index 19fb697..9ca1433 100644
+--- i/src/app.css
++++ w/src/app.css
+@@ -44,6 +44,10 @@
+   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+   --sidebar-border: oklch(0.92 0.004 286.32);
+   --sidebar-ring: oklch(0.705 0.015 286.067);
++
++  --grid-column-content-narrow: content-narrow;
++  --grid-column-content: content;
++  --grid-column-page: page;
+ }
+
+ .dark {
+@@ -126,4 +130,22 @@
+   body {
+     @apply bg-background text-foreground;
+   }
++  .layout-grid {
++    display: grid;
++  }
+ }
+diff --git i/src/lib/components/ui/button/button.svelte w/src/lib/components/ui/button/button.svelte
+index 29b1170..44a2d84 100644
+--- i/src/lib/components/ui/button/button.svelte
++++ w/src/lib/components/ui/button/button.svelte
+@@ -27,7 +27,7 @@
+         default: "h-9 px-4 py-2 has-[>svg]:px-3",
+         sm: "h-8 gap-1.5 rounded-full px-3 has-[>svg]:px-2.5",
+         lg: "h-10 rounded-full px-6 has-[>svg]:px-4",
+-        icon: "size-9",
++        icon: "size-9 rounded-md",
+         "icon-sm": "size-8",
+         "icon-lg": "size-10",
+       },

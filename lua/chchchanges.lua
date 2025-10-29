@@ -27,8 +27,9 @@ local function parse_diff(diff_output)
 	local lines = vim.split(diff_output, "\n", { plain = true })
 
 	for _, line in ipairs(lines) do
-		-- Parse file headers (diff --git a/file b/file)
-		local file_match = line:match("^diff %-%-git a/(.*) b/")
+		-- Parse file headers (diff --git a/file b/file or i/file w/file, etc)
+		-- Git can use different prefixes (a/b, i/w, etc) depending on config
+		local file_match = line:match("^diff %-%-git %w/(.-) %w/")
 		if file_match then
 			current_file = file_match
 		end
@@ -83,6 +84,24 @@ local function get_git_diff()
 	end
 
 	return output, nil
+end
+
+---Debug function to show git diff output
+---@return boolean success Whether the operation succeeded
+function M.debug_diff()
+	local diff_output, err = get_git_diff()
+	if not diff_output then
+		vim.notify("chchchanges: " .. (err or "Unknown error"), vim.log.levels.ERROR)
+		return false
+	end
+
+	-- Write diff output to a temp file for inspection
+	local tmpfile = vim.fn.tempname() .. '_git_diff.txt'
+	vim.fn.writefile(vim.split(diff_output, '\n'), tmpfile)
+	vim.cmd('vsplit ' .. tmpfile)
+
+	vim.notify(string.format('Git diff output written to: %s (%d bytes)', tmpfile, #diff_output), vim.log.levels.INFO)
+	return true
 end
 
 ---Populate quickfix list with git hunks

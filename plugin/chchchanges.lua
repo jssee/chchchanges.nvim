@@ -15,3 +15,10 @@ end, {
   bang = true,
   desc = 'Analyze git changes and populate quickfix list (! to not open)',
 })
+
+-- Debug command to inspect git diff output
+vim.api.nvim_create_user_command('ChChangesDebug', function()
+  require('chchchanges').debug_diff()
+end, {
+  desc = 'Show git diff output for debugging',
+})

@@ -21,6 +21,7 @@ all modifications in your working directory.
 
 Features:
   - Parses git diff output to extract hunks
+  - Supports all git diff prefix formats (a/b, i/w, etc.)
   - Populates quickfix list with proper formatting
   - Lazy-loaded for minimal startup impact
   - Configurable via vim.g variables
