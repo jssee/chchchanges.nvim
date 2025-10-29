@@ -1,0 +1,127 @@
+*chchchanges.txt*  Analyze git changes and populate quickfix list with hunks
+
+Author: Jesse
+License: MIT
+
+==============================================================================
+CONTENTS                                                *chchchanges-contents*
+
+    1. Introduction .......................... |chchchanges-introduction|
+    2. Commands .............................. |chchchanges-commands|
+    3. Configuration ......................... |chchchanges-configuration|
+    4. API ................................... |chchchanges-api|
+
+==============================================================================
+INTRODUCTION                                        *chchchanges-introduction*
+
+chchchanges.nvim is a Neovim plugin that analyzes git changes in your
+repository and populates the quickfix list with individual git hunks. Each
+hunk represents a section of changed code, making it easy to navigate through
+all modifications in your working directory.
+
+Features:
+  - Parses git diff output to extract hunks
+  - Populates quickfix list with proper formatting
+  - Lazy-loaded for minimal startup impact
+  - Configurable via vim.g variables
+  - LuaCATS type annotations for better IDE support
+
+==============================================================================
+COMMANDS                                                *chchchanges-commands*
+
+                                                                  *:ChChanges*
+:ChChanges              Analyze git changes, populate quickfix list, and
+                        open the quickfix window.
+
+:ChChanges!             Analyze git changes and populate quickfix list
+                        without opening the quickfix window.
+
+==============================================================================
+CONFIGURATION                                      *chchchanges-configuration*
+
+Configuration is done via global variables (vim.g).
+
+                                                      *g:chchchanges_git_cmd*
+g:chchchanges_git_cmd
+    Type: string
+    Default: "git"
+
+    The git command to use. Useful if you have git in a non-standard
+    location or want to use a git wrapper.
+
+    Example: >
+        vim.g.chchchanges_git_cmd = "/usr/local/bin/git"
+<
+
+                                                    *g:chchchanges_diff_args*
+g:chchchanges_diff_args
+    Type: table (list)
+    Default: {}
+
+    Additional arguments to pass to `git diff`. By default, shows unstaged
+    changes (equivalent to `git diff`). Can be used to customize the diff
+    output.
+
+    Example: >
+        vim.g.chchchanges_diff_args = { "--cached" }  -- Show staged changes
+        vim.g.chchchanges_diff_args = { "HEAD" }      -- Show all changes vs HEAD
+        vim.g.chchchanges_diff_args = { "-U5" }       -- More context lines
+<
+
+==============================================================================
+API                                                          *chchchanges-api*
+
+                                            *chchchanges.populate_quickfix()*
+chchchanges.populate_quickfix({opts})
+    Populate the quickfix list with git hunks.
+
+    Parameters: ~
+        {opts}  (table|nil) Optional configuration
+                - open (boolean): Whether to open quickfix window
+                                  (default: true)
+                - action (string): Quickfix action ('r' to replace,
+                                   'a' to append) (default: 'r')
+
+    Returns: ~
+        (boolean) true if successful, false otherwise
+
+    Example: >
+        -- Populate and open quickfix
+        require('chchchanges').populate_quickfix()
+
+        -- Populate without opening
+        require('chchchanges').populate_quickfix({ open = false })
+
+        -- Append to existing quickfix list
+        require('chchchanges').populate_quickfix({ action = 'a' })
+<
+
+==============================================================================
+EXAMPLES                                                *chchchanges-examples*
+
+Basic usage: >
+    " Open quickfix with changes
+    :ChChanges
+
+    " Load changes without opening quickfix
+    :ChChanges!
+<
+
+With custom configuration: >
+    " Show only staged changes
+    vim.g.chchchanges_diff_args = { '--cached' }
+    :ChChanges
+
+    " Use custom git command
+    vim.g.chchchanges_git_cmd = '/opt/git/bin/git'
+<
+
+Keymapping example: >
+    " Map <leader>gc to show git changes
+    vim.keymap.set('n', '<leader>gc', '<cmd>ChChanges<cr>', {
+      desc = 'Show git changes in quickfix'
+    })
+<
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:
