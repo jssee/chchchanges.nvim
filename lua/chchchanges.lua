@@ -72,7 +72,7 @@ local function get_git_diff()
 	local git_cmd = get_config("git_cmd", "git")
 	local diff_args = get_config("diff_args", {})
 
-	local cmd = { git_cmd, "diff", "--no-ext-diff" }
+	local cmd = { git_cmd, "diff", "-U0", "--no-ext-diff" }
 	if type(diff_args) == "table" then
 		vim.list_extend(cmd, diff_args)
 	end
@@ -96,11 +96,11 @@ function M.debug_diff()
 	end
 
 	-- Write diff output to a temp file for inspection
-	local tmpfile = vim.fn.tempname() .. '_git_diff.txt'
-	vim.fn.writefile(vim.split(diff_output, '\n'), tmpfile)
-	vim.cmd('vsplit ' .. tmpfile)
+	local tmpfile = vim.fn.tempname() .. "_git_diff.txt"
+	vim.fn.writefile(vim.split(diff_output, "\n"), tmpfile)
+	vim.cmd("vsplit " .. tmpfile)
 
-	vim.notify(string.format('Git diff output written to: %s (%d bytes)', tmpfile, #diff_output), vim.log.levels.INFO)
+	vim.notify(string.format("Git diff output written to: %s (%d bytes)", tmpfile, #diff_output), vim.log.levels.INFO)
 	return true
 end
 
